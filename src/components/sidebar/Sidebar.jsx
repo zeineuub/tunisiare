@@ -7,7 +7,6 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -26,17 +25,23 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <Link to="/flights" style={{ textDecoration: "none" }}>
+          <Link to="/flights/mr" style={{ textDecoration: "none" }}>
           <li>
             <FlightIcon className="icon" />
-            <span>List Filghts</span>
+            <span>List Filghts Marchnadise</span>
+          </li>
+          </Link>
+          <Link to="/flights/tr" style={{ textDecoration: "none" }}>
+          <li>
+            <FlightIcon className="icon" />
+            <span>List Filghts Trip</span>
           </li>
           </Link>
           <p className="title">LISTS</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Users</span>
+              <span>Employees</span>
             </li>
           </Link>
           <p className="title">USEFUL</p>

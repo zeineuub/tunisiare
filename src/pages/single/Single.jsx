@@ -10,12 +10,13 @@ const Single = () => {
     const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const flightNumber = useParams().flightNumber;
-  const from = searchParams.get("from");
-  const to = searchParams.get("to");
-  const depart = searchParams.get("depart");
-  const arrive = searchParams.get("arrive");
-  const duration = searchParams.get("duration");
+  const flightNumber = useParams().numeroVol;
+  const from = searchParams.get("aeroportDepart");
+  const to = searchParams.get("aeroportDestination");
+  const depart = searchParams.get("dateDepart");
+  const arrive = searchParams.get("dateArrivee");
+  const etat = searchParams.get("etat");
+  const type = searchParams.get("type");
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -67,8 +68,12 @@ const Single = () => {
                   <span className="itemValue">{arrive}</span>
                 </div>
                 <div className="detailItem">
-                  <span className="itemKey">Duration:</span>
-                  <span className="itemValue">{duration}</span>
+                  <span className="itemKey">Type:</span>
+                  <span className="itemValue">{type}</span>
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">Status:</span>
+                  <span className="itemValue">{etat}</span>
                 </div>
               </div>
             </div>

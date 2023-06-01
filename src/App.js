@@ -2,11 +2,12 @@ import Welcome from "./pages/welcome/welcome";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/register";
 
-import Flights from "./pages/flights/Flights";
+import FlightsTR from "./pages/flights/FlightsTR";
+import FlightsMR from "./pages/flights/FlightsMR";
+
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {userInputs } from "./formSource";
 import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
@@ -31,15 +32,11 @@ function App() {
             <Route path="profile" >
               <Route path=":userId" element={<Single />} />
             </Route>
-            <Route path="flights">
-              <Route index element={<Flights />} />
-              <Route path=":flightNumber" element={<Single />} />
-              <Route
-                path="new"
-                element={<New inputs={userInputs} title="Add New Flight" />}
-              />
+            <Route path="flights/tr" element={<FlightsTR />} />
+            <Route path="flights/mr" element={<FlightsMR />} />
+            <Route path="flights/:numeroVol" element={<Single />} />
+            <Route path="flights/new" element={<New/>}/>
             </Route>
-          </Route>
         </Routes>
       </BrowserRouter>
     </div>
