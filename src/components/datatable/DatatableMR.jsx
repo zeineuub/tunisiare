@@ -32,11 +32,13 @@ const StyledDataGrid = styled(DataGrid)`
 const Datatable = () => {
   const [flightMR, setFlightMR] = useState([]);
   const [token, setToken] = useState("");
+
   useEffect(() => {
     setToken(localStorage.getItem('token'));
 
     getFlightMR();
   }, []);
+
   const getFlightMR = () =>{
     fetch('/api/volMarchandises', {
       method: 'GET',
@@ -53,6 +55,7 @@ const Datatable = () => {
         console.error('Error fetching employees:', error);
       });
   }
+  
   const deleteFlight = (flightNumber) => {
     fetch(`/api/volMarchandises/${flightNumber}`, {
       method: 'DELETE',

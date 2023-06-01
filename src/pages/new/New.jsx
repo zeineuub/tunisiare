@@ -230,6 +230,7 @@ const New = () => {
   }
   // save flight
   const saveFlight = () => {
+    saveEquipage();
     let flight = {
       dateDepart: selecteDepartTime,
       dateArrivee: selecteArrivalTime,
@@ -453,7 +454,7 @@ const New = () => {
                         onChange={(event) => setSelectPilot(event.target.value)}
                       >
                         {pilots.map((pilot) => (
-                          <MenuItem key={pilot.id} value={pilot.id}>
+                          <MenuItem key={pilot.idEmploye} value={pilot.idEmploye}>
                             {pilot.nom} {pilot.prenom}
                           </MenuItem>
                         ))}
@@ -470,7 +471,7 @@ const New = () => {
                       onChange={(event) => setSelectCopilot(event.target.value)}
                     >
                       {copilots.map((copilot) => (
-                        <MenuItem key={copilot.id} value={copilot.id}>
+                        <MenuItem key={copilot.idEmploye} value={copilot.idEmploye}>
                           {copilot.nom} {copilot.prenom}
                         </MenuItem>
                       ))}

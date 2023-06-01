@@ -16,6 +16,9 @@ import { useContext } from "react";
 import Logo from "../../assets/images/Tunisair-logo.png"
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const id = localStorage.getItem("user").id;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user && user.roles.includes("ROLE_ADMIN");
   return (
     <div className="sidebar">
       <div className="top">
@@ -39,10 +42,14 @@ const Sidebar = () => {
           </Link>
           <p className="title">LISTS</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Employees</span>
-            </li>
+          {isAdmin && (
+            <Link to="/users" style={{ textDecoration: "none" }}>
+              <li>
+                <PersonOutlineIcon className="icon" />
+                <span>Employees</span>
+              </li>
+            </Link>
+          )}
           </Link>
           <p className="title">USEFUL</p>
           <li>
@@ -63,10 +70,12 @@ const Sidebar = () => {
             <span>Settings</span>
           </li>
           <p className="title">USER</p>
+          <Link to={`/users/${id}`} style={{ textDecoration: "none" }}>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
+          </Link>
           <li>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>

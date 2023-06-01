@@ -79,13 +79,14 @@ const Register = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const { accessToken, email, username, roles } = data;
+        const { accessToken, email, username, roles, id } = data;
         // Save the token, email, and username in localStorage
         localStorage.setItem('token', accessToken);
         const user = {
           email,
           username,
-          roles,
+          role: roles[0],
+          id
         };
         localStorage.setItem('user', JSON.stringify(user));
         navigate('/flights');
