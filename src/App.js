@@ -4,6 +4,9 @@ import Register from "./pages/register/register";
 
 import FlightsTR from "./pages/flights/FlightsTR";
 import FlightsMR from "./pages/flights/FlightsMR";
+import FlightsMRuser from "./pages/flights/FlightsMRuser";
+import FlightsTRuser from "./pages/flights/FlightsTRuser";
+
 
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
@@ -36,6 +39,9 @@ function App() {
             <Route path="flights/mr" element={<FlightsMR />} />
             <Route path="flights/:numeroVol" element={<Single />} />
             <Route path="flights/new" element={<New/>}/>
+
+            <Route path="flights/tr/user" element={<FlightsTRuser />} />
+            <Route path="flights/mr/user" element={<FlightsMRuser />} />
             </Route>
         </Routes>
       </BrowserRouter>
