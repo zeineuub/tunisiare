@@ -4,7 +4,7 @@ import signImage from "../../assets/images/sign.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     email: "",
@@ -26,13 +26,11 @@ const Login = () => {
       name: "password",
       type: "password",
       placeholder: "Password",
-      errorMessage:
-        "Password should be 8 characters or longer!",
+      errorMessage: "Password should be 8 characters or longer!",
       label: "Password",
       pattern: `^.{8,}$`,
       required: true,
-    }
-    
+    },
   ];
 
   const handleSubmit = (e) => {
@@ -42,10 +40,34 @@ const Login = () => {
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  const signin= () => {
-    navigate('/flights');
 
-  }
+  const signin = () => {
+    fetch('/api/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const { accessToken, email, username, roles } = data;
+        // Save the token, email, and username in localStorage
+        localStorage.setItem('token', accessToken);
+        const user = {
+          email,
+          username,
+          roles,
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate('/flights');
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error('Error:', error);
+      });
+  };
+
   return (
     <div
       className="signin"
@@ -67,7 +89,7 @@ const Login = () => {
           borderRadius: "10px",
         }}
       >
-        <h1 style={{ color: "#8E0909", textAlign: "center" }}>Login</h1>
+        <h1 style={{ color: "rgb(238,61,71)", textAlign: "center" }}>Login</h1>
         {inputs.map((input) => (
           <SignIn
             key={input.id}
@@ -76,14 +98,14 @@ const Login = () => {
             onChange={onChange}
           />
         ))}
-        <button 
+        <button
           onClick={signin}
           style={{
             width: "100%",
             height: "50px",
             padding: "10px",
             border: "none",
-            backgroundColor: "#8E0909",
+            backgroundColor: "rgb(238,61,71)",
             color: "white",
             borderRadius: "5px",
             fontWeight: "bold",
@@ -99,4 +121,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;

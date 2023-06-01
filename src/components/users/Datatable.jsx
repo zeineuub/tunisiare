@@ -1,8 +1,8 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource_users";
+import { userColumns } from "../../datatablesource_users";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const StyledDataGrid = styled(DataGrid)`
@@ -29,12 +29,30 @@ const StyledDataGrid = styled(DataGrid)`
   }
 `;
 const Datatable = () => {
-  const [data, setData] = useState(userRows);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+  const [token, setToken] = useState("");
+  const [employees, setEmployees] = useState([]);
+  const getEmployees = () =>{
+    fetch('/api/employes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      Authorization: `Bearer ${token}`,
+    })
+      .then(response => response.json())
+      .then(data => {
+        setEmployees(data);
+      })
+      .catch(error => {
+        console.error('Error fetching employees:', error);
+      });
+  }
+  useEffect(() => {
+    setToken(localStorage.getItem('token'));
 
+    getEmployees();
+  }, []);
   const actionColumn = [
     {
       field: "action",
@@ -56,11 +74,11 @@ const Datatable = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        List Users
+        List Employees
       </div>
       <StyledDataGrid
         className="datagrid"
-        rows={data}
+        rows={employees}
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}

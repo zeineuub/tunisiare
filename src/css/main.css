@@ -7,7 +7,7 @@
 }
 
 :root {
-  --PrimaryColor: hsl(255,50%,48%);
+  --PrimaryColor: rgb(238,61,71);
   --SecondaryColor: hsl(180,17%,95%);
   --colorOne: hsl(15,74%,70%);
   --colorTwo: hsl(28,100%,82%);

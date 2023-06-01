@@ -64,10 +64,37 @@ const Register = () => {
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  const signup= () => {
-    navigate('/flights');
-
-  }
+  const signup = () => {
+    const payload ={
+      email: values.email,
+      username:values.username,
+      password: values.password
+    }
+    fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const { accessToken, email, username, roles } = data;
+        // Save the token, email, and username in localStorage
+        localStorage.setItem('token', accessToken);
+        const user = {
+          email,
+          username,
+          roles,
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate('/flights');
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error('Error:', error);
+      });
+  };
   return (
     <div
       className="signin"
@@ -89,7 +116,7 @@ const Register = () => {
           borderRadius: "10px",
         }}
       >
-        <h1 style={{ color: "#8E0909", textAlign: "center" }}>Register</h1>
+        <h1 style={{ color: "rgb(238,61,71)", textAlign: "center" }}>Register</h1>
         {inputs.map((input) => (
           <SignUp
             key={input.id}
@@ -105,7 +132,7 @@ const Register = () => {
             height: "50px",
             padding: "10px",
             border: "none",
-            backgroundColor: "#8E0909",
+            backgroundColor: "rgb(238,61,71)",
             color: "white",
             borderRadius: "5px",
             fontWeight: "bold",
