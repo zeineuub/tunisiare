@@ -32,18 +32,15 @@ const StyledDataGrid = styled(DataGrid)`
 const Datatable = () => {
   const [flightMR, setFlightMR] = useState([]);
   const [token, setToken] = useState("");
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
 
-    getFlightMR();
-  }, []);
   const getFlightMR = () =>{
-    fetch('/api/volMarchandises', {
+    fetch('http://192.168.1.8:8090/api/volMarchandises', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -54,7 +51,11 @@ const Datatable = () => {
       });
   }
 
-
+  useEffect(() => {
+    let token = localStorage.getItem('token')
+    setToken(token);    
+    getFlightMR();
+  }, []);
   const actionColumn = [
     {
       field: "action",
@@ -90,6 +91,7 @@ const Datatable = () => {
         columns={flightMarchandise.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        getRowId={(row) => row.numeroVol}
       />
     </div>
   );

@@ -32,13 +32,14 @@ const Datatable = () => {
 
   const [token, setToken] = useState("");
   const [employees, setEmployees] = useState([]);
-  const getEmployees = () =>{
-    fetch('/api/employes', {
+  const getEmployees = (token) =>{
+    fetch('http://192.168.1.8:8090/api/employes', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -49,9 +50,8 @@ const Datatable = () => {
       });
   }
   useEffect(() => {
-    setToken(localStorage.getItem('token'));
-
-    getEmployees();
+    let token = localStorage.getItem('token')
+    getEmployees(token);
   }, []);
   const actionColumn = [
     {
@@ -82,6 +82,8 @@ const Datatable = () => {
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        getRowId={(row) => row.idEmploye}
+
       />
     </div>
   );

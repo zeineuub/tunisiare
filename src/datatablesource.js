@@ -31,7 +31,7 @@ export const flightMarchandise = [
     renderCell: (params) => {
       return (
         <div className="cellWithStatus">
-          {params.row.from}
+          {params.row.aeroportDepart.ville}
         </div>
       );
     },
@@ -46,7 +46,7 @@ export const flightMarchandise = [
     renderCell: (params) => {
       return (
         <div className="cellWithStatus">
-          {params.row.to}
+          {params.row.aeroportDestination.ville}
         </div>
       );
     },
@@ -60,7 +60,7 @@ export const flightMarchandise = [
     renderCell: (params) => {
       return (
         <div className="cellWithStatus">
-          {params.row.avion}
+          {params.row.avion.nomAvion}
         </div>
       );
     },
@@ -136,98 +136,63 @@ export const flightMarchandise = [
     },
   },
 ];
+
 export const flightTrip = [
   {
-    field: "company",
-    headerName: "Company",
+    field: "numeroVol",
     headerClassName: "customHeader",
-    headerAlign: 'center',
-    width: 100,
-    renderCell: () => {
-      return (
-        <div className="cellWithImg">
-          <img className="cellImg" src={logo} alt="avatar" />
-        </div>
-      );
-    },
+    headerName: "ID",
+    width: 70,
+    headerAlign: "center",
   },
-  { 
-    field: "numeroVol", 
-    headerClassName: "customHeader",
-    headerName: "ID", 
-    width: 70 ,
-    headerAlign: 'center'
-  },
-
   {
     field: "aeroportDepart",
     headerName: "From",
     width: 120,
     headerClassName: "customHeader",
-    headerAlign: 'center',
+    headerAlign: "center",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.from}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.aeroportDepart.ville}</div>;
     },
   },
-
   {
     field: "aeroportDestination",
     headerName: "To",
     width: 120,
     headerClassName: "customHeader",
-    headerAlign: 'center',
+    headerAlign: "center",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.to}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.aeroportDestination.ville}</div>;
     },
   },
   {
     field: "avion",
     headerName: "Airplane",
     width: 200,
-    headerAlign: 'center',
+    headerAlign: "center",
     headerClassName: "customHeader",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.avion}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.avion.nomAvion}</div>;
     },
   },
   {
     field: "dateDepart",
     headerName: "Departure Date",
     width: 200,
-    headerAlign: 'center',
+    headerAlign: "center",
     headerClassName: "customHeader",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.dateDepart}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.dateDepart}</div>;
     },
   },
   {
     field: "dateArrivee",
     headerName: "Arrival Date",
     width: 200,
-    headerAlign: 'center',
+    headerAlign: "center",
     headerClassName: "customHeader",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.dateArrivee}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.dateArrivee}</div>;
     },
   },
   {
@@ -235,42 +200,31 @@ export const flightTrip = [
     headerName: "Status",
     width: 160,
     headerClassName: "customHeader",
-    headerAlign: 'center',
+    headerAlign: "center",
     renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.etat}`}>
-          {params.row.etat}
-        </div>
-      );
+      return <div className={`cellWithStatus ${params.row.etat}`}>{params.row.etat}</div>;
     },
   },
   {
     field: "nbPassagers",
     headerName: "Nb Passengers",
     width: 200,
-    headerAlign: 'center',
+    headerAlign: "center",
     headerClassName: "customHeader",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.nbPassagers}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.nbPassagers}</div>;
     },
   },
   {
     field: "type",
     headerName: "Type",
     width: 200,
-    headerAlign: 'center',
+    headerAlign: "center",
     headerClassName: "customHeader",
     renderCell: (params) => {
-      return (
-        <div className="cellWithStatus">
-          {params.row.type}
-        </div>
-      );
+      return <div className="cellWithStatus">{params.row.type}</div>;
     },
   },
 ];
+
 

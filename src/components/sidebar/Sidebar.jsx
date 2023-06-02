@@ -18,7 +18,8 @@ const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
   const id = localStorage.getItem("user").id;
   const user = JSON.parse(localStorage.getItem("user"));
-  const isAdmin = user && user.roles.includes("ROLE_ADMIN");
+  
+  const isAdmin = user && user.role =="ROLE_ADMIN";
   return (
     <div className="sidebar">
       <div className="top">
@@ -28,29 +29,51 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <Link to="/flights/mr" style={{ textDecoration: "none" }}>
-          <li>
-            <FlightIcon className="icon" />
-            <span>List Filghts Marchnadise</span>
-          </li>
-          </Link>
-          <Link to="/flights/tr" style={{ textDecoration: "none" }}>
-          <li>
-            <FlightIcon className="icon" />
-            <span>List Filghts Trip</span>
-          </li>
-          </Link>
-          <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          {isAdmin ? (
+  <>
+    <Link to="/flights/mr" style={{ textDecoration: "none" }}>
+      <li>
+        <FlightIcon className="icon" />
+        <span>List Flights Marchandise</span>
+      </li>
+    </Link>
+    <Link to="/flights" style={{ textDecoration: "none" }}>
+      <li>
+        <FlightIcon className="icon" />
+        <span>List Flights Trip</span>
+      </li>
+    </Link>
+  </>
+) : (
+  <>
+    <Link to="/flights/mr/user" style={{ textDecoration: "none" }}>
+      <li>
+        <FlightIcon className="icon" />
+        <span>List Flights Marchandise</span>
+      </li>
+    </Link>
+    <Link to="/flights/tr/user" style={{ textDecoration: "none" }}>
+      <li>
+        <FlightIcon className="icon" />
+        <span>List Flights Trip</span>
+      </li>
+    </Link>
+  </>
+)}
+
+          
           {isAdmin && (
+            <>
+            <p className="title">LISTS</p>
+
             <Link to="/users" style={{ textDecoration: "none" }}>
               <li>
                 <PersonOutlineIcon className="icon" />
                 <span>Employees</span>
               </li>
             </Link>
+            </>
           )}
-          </Link>
           <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />

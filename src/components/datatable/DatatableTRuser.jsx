@@ -32,18 +32,15 @@ const StyledDataGrid = styled(DataGrid)`
 const Datatable = () => {
   const [flightTR, setFlightTR] = useState([]);
   const [token, setToken] = useState("");
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
 
-    getFlightTR();
-  }, []);
   const getFlightTR = () =>{
-    fetch('/api/volvoyageurs', {
+    fetch('http://192.168.1.8:8090/api/volvoyageurs', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -53,7 +50,11 @@ const Datatable = () => {
         console.error('Error fetching employees:', error);
       });
   }
-
+  useEffect(() => {
+    let token = localStorage.getItem('token')
+    setToken(token);
+    getFlightTR(token);
+  }, []);
   const actionColumn = [
     {
       field: "action",
@@ -89,6 +90,7 @@ const Datatable = () => {
         columns={flightTrip.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        getRowId={(row) => row.numeroVol}
       />
     </div>
   );

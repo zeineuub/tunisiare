@@ -32,34 +32,39 @@ const StyledDataGrid = styled(DataGrid)`
 const Datatable = () => {
   const [flightTR, setFlightTR] = useState([]);
   const [token, setToken] = useState("");
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
 
-    getFlightTR();
-  }, []);
-  const getFlightTR = () =>{
-    fetch('/api/volvoyageurs', {
+  const getFlightTR = (token) =>{
+
+    fetch('http://192.168.1.8:8090/api/volvoyageurs', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         setFlightTR(data);
       })
       .catch(error => {
         console.error('Error fetching employees:', error);
       });
   }
+  useEffect(() => {
+    let token = localStorage.getItem('token')
+    setToken(token);
+    getFlightTR(token);
+  }, []);
   const deleteFlight = (flightNumber) => {
-    fetch(`/api/volvoyageurs/${flightNumber}`, {
+    fetch(`http://192.168.1.8:8090/api/volvoyageurs/${flightNumber}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
     .then(response => response.json())
     .then(data => {
@@ -105,7 +110,7 @@ const Datatable = () => {
     <div className="flight">
       <div className="flightTitle">
         List Flights Trip
-        <Link to="/flights/new" className="link">
+        <Link to="/flights/newTR" className="link">
           Add New
         </Link>
       </div>
@@ -114,6 +119,7 @@ const Datatable = () => {
         columns={flightTrip.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        getRowId={(row) => row.numeroVol}
       />
     </div>
   );

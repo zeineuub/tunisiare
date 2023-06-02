@@ -8,7 +8,7 @@
     font-family: 'Montserrat',sans-serif;
 }
 :root{
-    --PrimaryColor: rgb(238,61,71);
+    --PrimaryColor: rgb(238,61,71) ;
     --SecondaryColor: hsl(180,17%,95%);
     --colorOne: hsl(15,74%,70%);
     --colorTwo: hsl(28,100%,82%);
@@ -888,7 +888,7 @@ h2{
     // seacrh section styling 
     .search{
         .sectionContainer{
-            .btn{
+            .btns {
                 width: 70%;
                 border-radius: 3rem;
                 flex-direction: row;

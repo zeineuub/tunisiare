@@ -70,7 +70,8 @@ const Register = () => {
       username:values.username,
       password: values.password
     }
-    fetch('/api/auth/signup', {
+    console.log('here')
+    fetch('http://192.168.1.8:8090/api/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,17 +80,7 @@ const Register = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const { accessToken, email, username, roles, id } = data;
-        // Save the token, email, and username in localStorage
-        localStorage.setItem('token', accessToken);
-        const user = {
-          email,
-          username,
-          role: roles[0],
-          id
-        };
-        localStorage.setItem('user', JSON.stringify(user));
-        navigate('/flights');
+        navigate('/signin');
       })
       .catch((error) => {
         // Handle the error

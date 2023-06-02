@@ -7,18 +7,20 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [values, setValues] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
   const inputs = [
     {
-      id: 2,
-      name: "email",
-      type: "email",
-      placeholder: "Email",
-      errorMessage: "It should be a valid email address!",
-      label: "Email",
+      id: 1,
+      name: "username",
+      type: "text",
+      placeholder: "Username",
+      errorMessage:
+        "Username should be 3-16 characters and shouldn't include any special character!",
+      label: "Username",
+      pattern: "^[A-Za-z0-9]{3,16}$",
       required: true,
     },
     {
@@ -42,7 +44,7 @@ const Login = () => {
   };
 
   const signin = () => {
-    fetch('/api/auth/signin', {
+    fetch('http://192.168.1.8:8090/api/auth/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,16 +53,22 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         const { accessToken, email, username, roles } = data;
         // Save the token, email, and username in localStorage
         localStorage.setItem('token', accessToken);
         const user = {
           email,
           username,
-          roles,
+          role:roles[0],
         };
         localStorage.setItem('user', JSON.stringify(user));
-        navigate('/flights');
+        if(user.role == "ROLE_USER"){
+          navigate('/flights/mr/user');
+
+        } else {
+          navigate('/flights');
+        }
       })
       .catch((error) => {
         // Handle the error

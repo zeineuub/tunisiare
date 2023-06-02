@@ -9,7 +9,9 @@ import FlightsTRuser from "./pages/flights/FlightsTRuser";
 
 
 import Single from "./pages/single/Single";
-import New from "./pages/new/New";
+import NewMR from "./pages/new/NewMR";
+import NewTR from "./pages/new/NewTR";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style/dark.scss";
 import { useContext } from "react";
@@ -35,10 +37,12 @@ function App() {
             <Route path="profile" >
               <Route path=":userId" element={<Single />} />
             </Route>
-            <Route path="flights/tr" element={<FlightsTR />} />
+            <Route path="flights" element={<FlightsTR />} />
             <Route path="flights/mr" element={<FlightsMR />} />
             <Route path="flights/:numeroVol" element={<Single />} />
-            <Route path="flights/new" element={<New/>}/>
+            <Route path="flights/newTR" element={<NewTR/>}/>
+            <Route path="flights/newMR" element={<NewMR/>}/>
+
 
             <Route path="flights/tr/user" element={<FlightsTRuser />} />
             <Route path="flights/mr/user" element={<FlightsMRuser />} />

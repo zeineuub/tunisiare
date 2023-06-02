@@ -33,36 +33,36 @@ const Datatable = () => {
   const [flightMR, setFlightMR] = useState([]);
   const [token, setToken] = useState("");
 
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
-
-    getFlightMR();
-  }, []);
-
-  const getFlightMR = () =>{
-    fetch('/api/volMarchandises', {
+  const getFlightMR = (token) =>{
+    fetch('http://192.168.1.8:8090/api/volMarchandises', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         setFlightMR(data);
       })
       .catch(error => {
         console.error('Error fetching employees:', error);
       });
   }
-  
+  useEffect(() => {
+    let token = localStorage.getItem('token')
+    setToken(token);    
+    getFlightMR(token);
+  }, []);
   const deleteFlight = (flightNumber) => {
-    fetch(`/api/volMarchandises/${flightNumber}`, {
+    fetch(`http://192.168.1.8:8090/api/volMarchandises/${flightNumber}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
     .then(response => response.json())
     .then(data => {
@@ -108,8 +108,8 @@ const Datatable = () => {
     <div className="flight">
       <div className="flightTitle">
         List Flights Marchandise
-        <Link to="/flights/new" className="link">
-          Add New
+        <Link to="/flights/newMR" className="link">
+        Add New
         </Link>
       </div>
       <StyledDataGrid
@@ -117,6 +117,7 @@ const Datatable = () => {
         columns={flightMarchandise.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        getRowId={(row) => row.numeroVol}
       />
     </div>
   );

@@ -33,7 +33,7 @@ const New = () => {
 
   // airplanes
   const [selectAirplane,setSelectAirplane] = useState({});
-  const [airplanes,setAirplanes] = useState("");
+  const [airplanes,setAirplanes] = useState([]);
 
   //pilots
   const [selectPilot, setSelectPilot]= useState({});
@@ -54,7 +54,6 @@ const New = () => {
 
   //status
   const [status, setStatus] = useState("");
-  const [selectStatus, setSelectStatus] = useState("");
 
   //delay
   const [delay, setDelay] = useState(0);
@@ -90,23 +89,25 @@ const New = () => {
   };
 
   useEffect(()=>{
-    setToken(localStorage.getItem('token'));
-    getRestaurants();
-    getPilots();
-    getCopilots();
-    getAirplanes();
-    getStaff();
-    getAeroports();
+    let token = localStorage.getItem('token');
+    setToken(token);
+    getRestaurants(token);
+    getPilots(token);
+    getCopilots(token);
+    getAirplanes(token);
+    getStaff(token);
+    getAeroports(token);
   },[])
 
   // get restaurants
-  const getRestaurants = async() =>{
-    fetch('/api/restaurations', {
+  const getRestaurants = async(token) =>{
+    fetch('http://192.168.1.8:8090/api/restaurations', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -118,13 +119,14 @@ const New = () => {
   }
 
     // get aeroports
-    const getAeroports = async() =>{
-      fetch('/api/aeroports', {
+    const getAeroports = async(token) =>{
+      fetch('http://192.168.1.8:8090/api/aeroports', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+
         },
-        Authorization: `Bearer ${token}`,
       })
         .then(response => response.json())
         .then(data => {
@@ -135,13 +137,14 @@ const New = () => {
         });
     }
   // get pilots
-  const getPilots = async() =>{
-    fetch('/api/pilotes', {
+  const getPilots = async(token) =>{
+    fetch('http://192.168.1.8:8090/api/pilotes', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -153,13 +156,14 @@ const New = () => {
   }
 
   // get copilots
-  const getCopilots = async() =>{
-    fetch('/api/copilotes', {
+  const getCopilots = async(token) =>{
+    fetch('http://192.168.1.8:8090/api/copilotes', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -171,13 +175,14 @@ const New = () => {
   }
 
   // get staff
-  const getStaff = async() =>{
-    fetch(' /api/staff', {
+  const getStaff = async(token) =>{
+    fetch('http://192.168.1.8:8090/api/staff', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -189,13 +194,14 @@ const New = () => {
   }
 
   // get airplanes
-  const getAirplanes = async() =>{
-    fetch('/api/avions', {
+  const getAirplanes = async(token) =>{
+    fetch('http://192.168.1.8:8090/api/avions', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+
       },
-      Authorization: `Bearer ${token}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -205,68 +211,78 @@ const New = () => {
         console.error('Error fetching airplanes:', error);
       });
   }
-  // const save equipage
   const saveEquipage = () => {
-    const equipage ={
-      copilot: selectCopilot,
-      pilot: selectCopilot,
-      staff: selectStaff
-    }
-    fetch('/api/equipages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      Authorization: `Bearer ${token}`,
-      body: JSON.stringify(equipage)
-    })
-    .then(response => response.json())
-    .then(data => {
-      setEquipage(data);
-    })
-    .catch(error => {
-      console.error('Error fetching airplanes:', error);
+    return new Promise((resolve, reject) => {
+      let token = localStorage.getItem('token');
+      const modifiedStaffs = selectStaff.map(({ idEmploye }) => ({ idEmploye }));
+      const equipage = {
+        copilot: selectCopilot.idEmploye,
+        pilot: selectCopilot.idEmploye,
+        staff: modifiedStaffs
+      };
+      fetch('http://192.168.1.8:8090/api/equipages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(equipage)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Equipage saved:', data);
+          resolve(data);
+        })
+        .catch(error => {
+          console.error('Error saving equipage:', error);
+          reject(error);
+        });
     });
-  }
-  // save flight
+  };
+  
   const saveFlight = () => {
-    saveEquipage();
-    let flight = {
-      dateDepart: selecteDepartTime,
-      dateArrivee: selecteArrivalTime,
-      retard: 0,
-      etat: status,
-      aeroportDepart: from,
-      aeroportDestination: to,
-      avion: selectAirplane,
-      equipage: equipage,
-      restaurations: selectRestaurant,
-    };
-    
-    if (typeFlight === 'Marchandise') {
-      flight.poids = weight;
-      flight.typeMarchandise = typeMarchandise;
-    } else {
-      flight.nbPassenger = nbPassenger;
-      flight.typeTrip = typeTrip;
-    }
-    
-    fetch('/api/vol', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      Authorization: `Bearer ${token}`,
-      body: JSON.stringify(flight)
-    })
-    .then(response => response.json())
-    .then(data => {
-      setFlight(data);
-    })
-    .catch(error => {
-      console.error('Error fetching airplanes:', error);
-    });
-  }
+    let token = localStorage.getItem('token');
+    saveEquipage()
+      .then(equipage => {
+        let flight = {
+          dateDepart: selecteDepartTime,
+          dateArrivee: selecteArrivalTime,
+          retard: delay,
+          etat: status,
+          aeroportDepart: { idAeroport: from },
+          aeroportDestination: { idAeroport: to },
+          avion: { idAvion: selectAirplane },
+          equipage: { idEquipage: equipage.idEquipage },
+          restaurations: selectRestaurant.map(({ idRestauration }) => ({ idRestauration })),
+          typeMarchandise,
+          poids: weight
+        };
+        
+        console.log(JSON.stringify(flight));
+        
+  
+        fetch('http://192.168.1.8:8090/api/volMarchandises  ', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(flight)
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Flight saved:', data);
+            setFlight(data);
+          })
+          .catch(error => {
+            console.error('Error saving flight:', error);
+          });
+      })
+      .catch(error => {
+        console.error('Error saving equipage:', error);
+      });
+  };
+  
   return (
     <div className="new">
       <Sidebar />
@@ -276,7 +292,7 @@ const New = () => {
         <div
           style={{
             position: "absolute",
-            top: "500px",
+            top: "560px",
             left: "50%",
             transform: "translate(-50%, -50%)"
           }}
@@ -304,6 +320,8 @@ const New = () => {
                       label="Flight code"
                       placeholder="XX123"
                       value={numeroVol}
+                      onChange={(event) => setNumeroVol(event.target.value)}
+
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -422,6 +440,8 @@ const New = () => {
                       label="Delay"
                       placeholder="Enter the delay"
                       value={delay}
+                      onChange={(event) => setDelay(event.target.value)}
+
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -501,74 +521,31 @@ const New = () => {
                     Marchandise 
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id='form-layouts-separator-select-label'>Select type flight</InputLabel>
-                    <Select
-                      id='form-layouts-separator-select'
-                      labelId='form-layouts-separator-select-label'
-                      value={typeFlight}
-                      onChange={(event) => setStatus(event.target.value)}
-                    >
-                      <MenuItem value="marchandise">Marchandise</MenuItem>
-                      <MenuItem value="trip">Trip</MenuItem>
-                    </Select>
-                  </FormControl>
+                    <Grid item xs={12}>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      Marchandise
+                    </Typography>
                   </Grid>
-                  {typeFlight === 'trip' ? (
-                    <>
-                      <Grid item xs={12}>
-                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                          Trip
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          type="number"
-                          label="Number of passengers"
-                          placeholder="0"
-                          value={nbPassenger}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          type="text"
-                          label="Type trip"
-                          placeholder="type flight"
-                          value={typeTrip}
-                        />
-                      </Grid>
-                    </>
-                  ) : (
-                    <>
-                      <Grid item xs={12}>
-                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                          Marchandise
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          type="number"
-                          label="Weight"
-                          placeholder="0"
-                          value={weight}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          type="text"
-                          label="Type merchandise"
-                          placeholder="Select type merchandise"
-                          value={typeMarchandise}
-                        />
-                      </Grid>
-                    </>
-                  )}
-
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      type="number"
+                      label="Weight"
+                      placeholder="0"
+                      value={weight}
+                      onChange={(event) => setWeight(event.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        type="text"
+                        label="Type merchandise"
+                        placeholder="Select type merchandise"
+                        value={typeMarchandise}
+                        onChange={(event) => setTypeMarchandise(event.target.value)}
+                      />
+                    </Grid>
                 </Grid>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Button
@@ -576,7 +553,8 @@ const New = () => {
                     type="submit"
                     sx={{ mr: 3 }}
                     variant="contained"
-                    style={{ backgroundColor: "rgba(235,31,40,255)" }}
+                    style={{ backgroundColor: "rgba(235,31,40,255)", top: "30px"
+                  }}
                     onClick={saveFlight}
                   >
                   Add Flight
@@ -587,7 +565,9 @@ const New = () => {
                     variant="outlined"
                     style={{
                       color: "rgba(235,31,40,255)",
-                      borderColor: "rgba(235,31,40,255)"
+                      borderColor: "rgba(235,31,40,255)",
+                      top: "30px"
+
                     }}
                   >
                     Cancel
