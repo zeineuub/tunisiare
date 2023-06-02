@@ -1,15 +1,22 @@
 import "./single.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { GoogleMap, Marker, useLoadScript, Polyline } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  useLoadScript,
+  Polyline
+} from "@react-google-maps/api";
 import { useMemo } from "react";
 import { FaPlane } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
-import badge from '../../assets/images/badge.png';
+import badge from "../../assets/images/badge.png";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+
 const Single = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-
   const flightNumber = useParams().numeroVol;
   const from = searchParams.get("from");
   const to = searchParams.get("to");
@@ -17,9 +24,12 @@ const Single = () => {
   const arrive = searchParams.get("arrive");
   const etat = searchParams.get("etat");
   const type = searchParams.get("type");
-
+  const weight = searchParams.get("poids");
+  const user = JSON.parse(localStorage.getItem("user"));
+  
+  const isAdmin = user && user.role =="ROLE_ADMIN";
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
   });
 
   const center = useMemo(() => ({ lat: 18.52043, lng: 73.856743 }), []);
@@ -27,7 +37,7 @@ const Single = () => {
   const flightPathCoordinates = useMemo(
     () => [
       { lat: 48.8566, lng: 2.3522, marker: `${from}` },
-      { lat: 36.8065, lng: 10.1815, marker: `${to}` },
+      { lat: 36.8065, lng: 10.1815, marker: `${to}` }
     ],
     []
   );
@@ -38,13 +48,9 @@ const Single = () => {
       <div className="singleContainer">
         <div className="top">
           <div className="left">
-            <h1 className="title">Flight Detail</h1>
+            <h1 className="title">Flight Marchandise Details</h1>
             <div className="item">
-              <img
-                src={badge}
-                alt=""
-                className="itemImg"
-              />
+              <img src={badge} alt="" className="itemImg" />
               <div className="details">
                 <h1 className="itemTitle">Tunisaire</h1>
                 <div className="detailItem">
@@ -68,13 +74,28 @@ const Single = () => {
                   <span className="itemValue">{arrive}</span>
                 </div>
                 <div className="detailItem">
-                  <span className="itemKey">Type:</span>
-                  <span className="itemValue">{type}</span>
-                </div>
-                <div className="detailItem">
                   <span className="itemKey">Status:</span>
                   <span className="itemValue">{etat}</span>
                 </div>
+                {isAdmin && (
+                    <>
+                        <div className="detailItem">
+                        <span className="itemKey">Type Merchandise:</span>
+                        <span className="itemValue">{type}</span>
+                        </div>
+                        <div className="detailItem">
+                        <span className="itemKey">Weight:</span>
+                        <span className="itemValue">{weight}</span>
+                        </div>
+                        <Link
+                        to={`/flights/editMR/${flightNumber}`}
+                        style={{ textDecoration: "none" }}
+                        className="link"
+                        >
+                        Edit Flight
+                        </Link>
+                    </>
+                )}
               </div>
             </div>
           </div>
@@ -85,11 +106,15 @@ const Single = () => {
             {!isLoaded ? (
               <h1>Loading...</h1>
             ) : (
-              <GoogleMap mapContainerClassName="map-container" center={center} zoom={2}>
+              <GoogleMap
+                mapContainerClassName="map-container"
+                center={center}
+                zoom={2}
+              >
                 <Polyline
                   path={flightPathCoordinates.map((coordinate) => ({
                     lat: coordinate.lat,
-                    lng: coordinate.lng,
+                    lng: coordinate.lng
                   }))}
                   options={{
                     strokeColor: "#FF0000",
@@ -104,9 +129,9 @@ const Single = () => {
                           null,
                           new window.google.maps.Size(30, 30)
                         ),
-                        offset: "100%",
-                      },
-                    ],
+                        offset: "100%"
+                      }
+                    ]
                   }}
                 />
                 {flightPathCoordinates.map((coordinate, index) => (
@@ -115,9 +140,10 @@ const Single = () => {
                     position={{ lat: coordinate.lat, lng: coordinate.lng }}
                     options={{
                       icon: {
-                        url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                        scaledSize: new window.google.maps.Size(30, 30),
-                      },
+                        url:
+                          "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                        scaledSize: new window.google.maps.Size(30, 30)
+                      }
                     }}
                   />
                 ))}
