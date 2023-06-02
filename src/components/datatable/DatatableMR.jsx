@@ -43,8 +43,13 @@ const Datatable = () => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
-        setFlightMR(data);
+        const updatedFlightMR = data.map(flight => ({
+          ...flight,
+          aeroportDepart: flight.aeroportDepart.nom,
+          aeroportDestination: flight.aeroportDestination.nom,
+        }));
+        console.log(updatedFlightMR)
+        setFlightMR(updatedFlightMR);
       })
       .catch(error => {
         console.error('Error fetching employees:', error);
@@ -64,9 +69,8 @@ const Datatable = () => {
 
       },
     })
-    .then(response => response.json())
     .then(data => {
-      setFlightMR(data);
+      getFlightMR(token);
 
     })
     .catch(error => {
@@ -82,12 +86,10 @@ const Datatable = () => {
       headerClassName: "customHeader",
       headerAlign: 'center',
       renderCell: (params) => {
-        const { numeroVol, aeroportDepart, aeroportDestination, dateDepart, dateArrivee,etat,typeMarchandise } = params.row;
-
-        return (
+        const { numeroVol, aeroportDepart, aeroportDestination, dateDepart, dateArrivee,etat,typeMarchandise , poids} = params.row;        return (
           <div className="cellAction">
             <Link
-              to={`/flights/${numeroVol}?from=${aeroportDepart}&to=${aeroportDestination}&depart=${dateDepart}&arrive=${dateArrivee}&duration=${etat}&type=${typeMarchandise}`}
+              to={`/flights/detail/mr/${numeroVol}?from=${encodeURIComponent(JSON.stringify(aeroportDepart))}&to=${aeroportDestination}&depart=${dateDepart}&arrive=${dateArrivee}&etat=${etat}&type=${typeMarchandise}&poids=${poids}`}
               style={{ textDecoration: "none" }}
             >
               <div className="viewButton">View</div>

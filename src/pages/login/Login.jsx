@@ -30,7 +30,7 @@ const Login = () => {
       placeholder: "Password",
       errorMessage: "Password should be 8 characters or longer!",
       label: "Password",
-      pattern: `^.{8,}$`,
+      pattern: `^.{4,}$`,
       required: true,
     },
   ];

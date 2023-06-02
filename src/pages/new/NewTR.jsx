@@ -62,17 +62,9 @@ const New = () => {
   const [selecteDepartTime, setSelecteDepartTime] = useState("");
   const [selecteArrivalTime, setSelectArrivalTime] = useState("");
 
-  // flight type
-  const [typeFlight, setTypeFlight] = useState("");
-
-  // weight
-  const [weight, setWeight] = useState(0);
-
-  // type marchandise 
-  const[typeMarchandise, setTypeMarchandise] = useState("");
 
   // nb passengers
-  const [nbPassenger, setNbPassenger] = useState(0);
+  const [nbPassagers, setNbPassagers] = useState(0);
 
   // type trip
   const[typeTrip, setTypeTrip] = useState("");
@@ -254,7 +246,7 @@ const New = () => {
           avion: { idAvion: selectAirplane },
           equipage: { idEquipage: equipage.idEquipage },
           restaurations: selectRestaurant.map(({ idRestauration }) => ({ idRestauration })),
-          nbPassagers: nbPassenger,
+          nbPassagers: nbPassagers,
           type: typeTrip
         };
         
@@ -526,8 +518,8 @@ const New = () => {
                         type="number"
                         label="Number of passengers"
                         placeholder="0"
-                        value={nbPassenger}
-                        onChange={(event) => setNbPassenger(event.target.value)}
+                        value={nbPassagers}
+                        onChange={(event) => setNbPassagers(event.target.value)}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>

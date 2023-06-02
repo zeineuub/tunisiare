@@ -44,7 +44,12 @@ const Datatable = () => {
     })
       .then(response => response.json())
       .then(data => {
-        setFlightTR(data);
+        const updatedFlightMR = data.map(flight => ({
+          ...flight,
+          aeroportDepart: flight.aeroportDepart.nom,
+          aeroportDestination: flight.aeroportDestination.nom,
+        }));
+        setFlightTR(updatedFlightMR);
       })
       .catch(error => {
         console.error('Error fetching employees:', error);
@@ -68,7 +73,7 @@ const Datatable = () => {
         return (
           <div className="cellAction">
             <Link
-              to={`/flights/${numeroVol}?from=${aeroportDepart}&to=${aeroportDestination}&depart=${dateDepart}&arrive=${dateArrivee}&duration=${etat}&type=${type}`}
+              to={`/flights/detail/tr/${numeroVol}?from=${aeroportDepart}&to=${aeroportDestination}&depart=${dateDepart}&arrive=${dateArrivee}&etat=${etat}&type=${type}`}
               style={{ textDecoration: "none" }}
             >
               <div className="viewButton">View</div>

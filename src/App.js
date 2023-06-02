@@ -8,7 +8,12 @@ import FlightsMRuser from "./pages/flights/FlightsMRuser";
 import FlightsTRuser from "./pages/flights/FlightsTRuser";
 
 
-import Single from "./pages/single/Single";
+import SingleMR from "./pages/single/SingleMR";
+import SingleTR from "./pages/single/SingleTR";
+
+import EditMR from "./pages/new/EditMR";
+import EditTR from "./pages/new/EditTR";
+
 import NewMR from "./pages/new/NewMR";
 import NewTR from "./pages/new/NewTR";
 
@@ -34,14 +39,14 @@ function App() {
             {/* <Route path="/home" element={<Home />} /> */}
             <Route path="signup" element={<Register />} />
             <Route path="users" element={<List />} />
-            <Route path="profile" >
-              <Route path=":userId" element={<Single />} />
-            </Route>
             <Route path="flights" element={<FlightsTR />} />
             <Route path="flights/mr" element={<FlightsMR />} />
-            <Route path="flights/:numeroVol" element={<Single />} />
             <Route path="flights/newTR" element={<NewTR/>}/>
             <Route path="flights/newMR" element={<NewMR/>}/>
+            <Route path="flights/editTR/:flightNumber" element={<EditTR/>}/>
+            <Route path="flights/editMR/:flightNumber" element={<EditMR/>}/>
+            <Route path="flights/detail/tr/:numeroVol" element={<SingleTR/>}/>
+            <Route path="flights/detail/mr/:numeroVol" element={<SingleMR/>}/>
 
 
             <Route path="flights/tr/user" element={<FlightsTRuser />} />

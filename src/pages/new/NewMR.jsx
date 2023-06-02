@@ -40,7 +40,7 @@ const New = () => {
   const [pilots, setPilots] = useState([]);
 
   //copilots
-  const [selectCopilot, setSelectCopilot] = useState([]);
+  const [selectCopilot, setSelectCopilot] = useState({});
   const [copilots, setCopilots] = useState([]);
 
   // aerports
@@ -62,20 +62,12 @@ const New = () => {
   const [selecteDepartTime, setSelecteDepartTime] = useState("");
   const [selecteArrivalTime, setSelectArrivalTime] = useState("");
 
-  // flight type
-  const [typeFlight, setTypeFlight] = useState("");
 
   // weight
   const [weight, setWeight] = useState(0);
 
   // type marchandise 
   const[typeMarchandise, setTypeMarchandise] = useState("");
-
-  // nb passengers
-  const [nbPassenger, setNbPassenger] = useState(0);
-
-  // type trip
-  const[typeTrip, setTypeTrip] = useState("");
 
   // equipage
   const [equipage, setEquipage] = useState({})

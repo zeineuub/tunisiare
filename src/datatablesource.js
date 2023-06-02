@@ -25,13 +25,13 @@ export const flightMarchandise = [
   {
     field: "aeroportDepart",
     headerName: "From",
-    width: 120,
+    width: 200,
     headerClassName: "customHeader",
     headerAlign: 'center',
     renderCell: (params) => {
       return (
         <div className="cellWithStatus">
-          {params.row.aeroportDepart.ville}
+          {params.row.aeroportDepart}
         </div>
       );
     },
@@ -40,13 +40,13 @@ export const flightMarchandise = [
   {
     field: "aeroportDestination",
     headerName: "To",
-    width: 120,
+    width: 200,
     headerClassName: "customHeader",
     headerAlign: 'center',
     renderCell: (params) => {
       return (
         <div className="cellWithStatus">
-          {params.row.aeroportDestination.ville}
+          {params.row.aeroportDestination}
         </div>
       );
     },
@@ -152,7 +152,7 @@ export const flightTrip = [
     headerClassName: "customHeader",
     headerAlign: "center",
     renderCell: (params) => {
-      return <div className="cellWithStatus">{params.row.aeroportDepart.ville}</div>;
+      return <div className="cellWithStatus">{params.row.aeroportDepart}</div>;
     },
   },
   {
@@ -162,7 +162,7 @@ export const flightTrip = [
     headerClassName: "customHeader",
     headerAlign: "center",
     renderCell: (params) => {
-      return <div className="cellWithStatus">{params.row.aeroportDestination.ville}</div>;
+      return <div className="cellWithStatus">{params.row.aeroportDestination}</div>;
     },
   },
   {
